@@ -1,0 +1,76 @@
+app: social-experts
+service: backend
+
+frameworkVersion: '3'
+
+useDotenv: true
+
+package:
+  individually: true
+  excludeDevDependencies: true
+  patterns:
+    - "!.git/**"
+    - "!test/**"
+    - "!e2e/**"
+    - "!src/**"
+    - "!node_modules/**"
+    - "!package-lock.json"
+    - "!package.json"
+    - "!serverless.yml"
+    - "!tsconfig.*"
+    - "!README.md"
+
+
+plugins:
+  - serverless-cloudformation-sub-variables
+  - serverless-esbuild
+  - serverless-prune-plugin
+  - serverless-scriptable-plugin
+  - serverless-offline
+  - serverless-offline-ssm
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  stage: ${opt:stage, 'dev'}
+  stackName: ${self:custom.baseName}
+  region: ${opt:region, 'eu-west-1'}
+  endpointType: REGIONAL
+
+functions:
+  hello:
+    handler: handler.hello  
+
+custom:
+  baseName: ${self:service}-${sls:stage}
+
+
+  serverless-offline:
+    httpPort: 5000
+
+  esbuild:
+    bundle: true
+    minify: true
+    sourcemap: true
+    platform: "node"
+    target: "node16"
+    exclude: ["aws-sdk"]
+    define: { "require.resolve": undefined }
+    concurrency: 10
+    watch:
+      pattern: ["./index.ts", "src/**/*.ts"]
+      ignore: [".serverless/**/*", ".build", ".build", "dist", "node_modules"]
+
+  scriptable:
+    hooks:
+      before:package:createDeploymentArtifacts: npm run build
+      after:aws:deploy:deploy:updateStack:
+        echo after deploy
+      before:migrate:command: echo before migrating
+      after:migrate:command: echo after migrating
+    commands:
+      migrate: echo Running migration
+
+  serverless-offline-ssm:
+    stages:
+      - offline
