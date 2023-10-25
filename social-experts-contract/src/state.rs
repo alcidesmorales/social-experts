@@ -50,4 +50,5 @@ pub enum Location {
 }
 
 pub const SEEKER: Item<Seeker> = Item::new("seeker");
-pub const PROFILES: Map<&[u8], Profile> = Map::new("profiles");
+pub const PROFILES: Map<u64, Profile> = Map::new("profiles");
+pub const PROFILES_SEQ: Item<u64> = Item::new("profiles_seq");
