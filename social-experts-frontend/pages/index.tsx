@@ -9,24 +9,8 @@ const Home: NextPage = () => {
   return (
     <WalletLoader>
       <h1 className="text-6xl font-bold">
-        Welcome to {process.env.NEXT_PUBLIC_CHAIN_NAME} !
+        Welcome to Social Experts!
       </h1>
-
-      <div className="mt-3 text-2xl">
-        Your wallet address is:{' '}
-        <pre></pre>
-        <Link
-          href={process.env.NEXT_PUBLIC_CHAIN_EXPLORER + "coreum/accounts/" + walletAddress}
-          passHref
-          target="_blank"
-          rel="noreferrer"
-          className="font-mono break-all whitespace-pre-wrap link link-primary">
-
-          {walletAddress}
-
-        </Link>
-
-      </div>
 
       <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 max-w-full sm:w-full">
         <Link
