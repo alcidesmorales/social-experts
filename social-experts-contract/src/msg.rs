@@ -91,3 +91,17 @@ pub enum QueryMsg {
         limit: Option<u32>,
     },    
 }
+
+// We define a custom struct for each query response
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+pub struct ProfileResponse {
+    pub id: u64,
+    pub location: Location,
+    pub roles: Vec<Roles>,
+    pub skills: Vec<String>,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+pub struct ProfileListResponse {
+    pub profiles: Vec<ProfileResponse>,
+}

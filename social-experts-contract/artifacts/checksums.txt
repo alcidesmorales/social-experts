@@ -1,1 +1,1 @@
-4f6c47a5593c9b852e261304dc65235e87abb3738a5b863914755d7012a4552c  social_experts_contract.wasm
+c88ba58027bcc1d83a5215b52ba56d536ad6006375da523bd168f64aa1d33f9c  social_experts_contract.wasm

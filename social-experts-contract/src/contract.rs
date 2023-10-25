@@ -8,9 +8,10 @@ use coreum_wasm_sdk::core::CoreumMsg;
 use cosmwasm_std::{entry_point, to_binary};
 use cosmwasm_std::{Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult};
 use cw2::set_contract_version;
+use cw_storage_plus::Bound;
 
 use crate::error::ContractError;
-use crate::msg::{ExecuteMsg, InstantiateMsg, QueryMsg};
+use crate::msg::{ExecuteMsg, InstantiateMsg, QueryMsg, ProfileResponse, ProfileListResponse};
 use crate::state::{Seeker, SEEKER, PROFILES, Profile, Location, Roles, PROFILES_SEQ};
 
 // version info for migration info
@@ -175,9 +176,58 @@ pub fn execute_delete_profile(
 
 
 #[cfg_attr(not(feature = "library"), entry_point)]
-pub fn query(_deps: Deps, _env: Env, _msg: QueryMsg) -> StdResult<Binary> {
-    to_binary("OK")
+pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
+    match msg {
+        QueryMsg::QueryProfile { id } => to_binary(&query_profile(deps, id)?),
+        QueryMsg::QueryProfileList { start_after, limit } => {
+            to_binary(&query_profile_list(deps, start_after, limit)?)
+        }
+    }
 }
+
+fn query_profile(deps: Deps, id: u64) -> StdResult<ProfileResponse> {
+    let profile = PROFILES.load(deps.storage, id)?;
+    Ok(ProfileResponse {
+        id: profile.id,
+        location: profile.location,
+        roles: profile.roles,
+        skills: profile.skills,        
+    })
+}
+
+// Limits for pagination
+const MAX_LIMIT: u32 = 20;
+const DEFAULT_LIMIT: u32 = 5;
+
+fn query_profile_list(deps: Deps, start_after: Option<u64>, limit: Option<u32>) -> StdResult<ProfileListResponse> {
+    let limit = limit.unwrap_or(DEFAULT_LIMIT).min(MAX_LIMIT) as usize;
+    let start = start_after.map(Bound::exclusive);
+
+    let profiles: StdResult<Vec<_>> = PROFILES
+        .range(deps.storage, start, None, cosmwasm_std::Order::Ascending)
+        .take(limit)
+        .collect();
+
+    let result = ProfileListResponse {
+        profiles: profiles?
+            .into_iter()
+            .map(|profile| 
+            {
+                let (_, profile) = profile;
+                ProfileResponse {
+                    id: profile.id,
+                    location: profile.location,
+                    roles: profile.roles,
+                    skills: profile.skills,
+                }
+            }
+        ).collect(),
+    };
+    Ok(result)
+}
+
+
+
 
 #[cfg(test)]
 mod tests {}
