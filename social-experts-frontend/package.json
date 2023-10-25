@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@cosmjs/cosmwasm-stargate": "^0.31.3",
+    "antd": "^5.10.2",
     "daisyui": "^3.9.3",
     "js-sha256": "^0.10.1",
     "next": "^13.5.6",
@@ -20,6 +21,7 @@
   "devDependencies": {
     "@types/react": "^18.2.32",
     "autoprefixer": "^10.4.16",
+    "babel-plugin-import": "^1.13.8",
     "eslint": "^8.52.0",
     "eslint-config-next": "^13.5.6",
     "postcss": "^8.4.31",

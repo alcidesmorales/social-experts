@@ -1,8 +1,9 @@
-import {createContext, ReactNode, useContext} from 'react'
-import {IClientContext, useClientContext,} from 'hooks/client'
+import { createContext, ReactNode, useContext } from 'react'
+import { IClientContext, useClientContext, } from 'hooks/client'
 
-let ClientContext: any
-let {Provider} = (ClientContext =
+let ClientContext: React.Context<IClientContext>
+
+let { Provider } = (ClientContext =
   createContext<IClientContext>({
     walletAddress: '',
     signingClient: null,
@@ -15,10 +16,9 @@ let {Provider} = (ClientContext =
     },
   }))
 
-export const useSigningClient = (): IClientContext =>
-  useContext(ClientContext)
+export const useSigningClient = (): IClientContext => useContext(ClientContext)
 
-export const SigningClientProvider = ({children}: {
+export const SigningClientProvider = ({ children }: {
   children: ReactNode
 }) => {
   const value = useClientContext()

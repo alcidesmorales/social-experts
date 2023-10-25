@@ -1,10 +1,11 @@
-import {useSigningClient} from 'contexts/client'
+import { useSigningClient } from 'contexts/client'
 import Link from 'next/link'
 import Image from 'next/image'
 import Router from 'next/router'
+import { IClientContext } from 'hooks/client'
 
 function Nav() {
-  const {walletAddress, connectWallet, disconnect} = useSigningClient()
+  const { walletAddress, connectWallet, disconnect } = useSigningClient();
   const handleConnect = () => {
     if (walletAddress.length === 0) {
       connectWallet()
