@@ -1,0 +1,1 @@
+05a47283356d0cc1bf52a3786f62c446f856f82c0cb4f933977b06695b3d023b  /target/wasm32-unknown-unknown/release/social_experts_contract.wasm
