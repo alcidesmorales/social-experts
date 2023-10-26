@@ -8,23 +8,20 @@ import {QueryNFTsResponse} from "../coreum/proto-ts/coreum/nft/v1beta1/query";
 import {AssetNFT as AssetNFTTx, NFT as NFTTx} from "../coreum/tx";
 import {EncodeObject} from "@cosmjs/proto-signing";
 
-const nftClassSymbol = `kittens${Date.now()}`
+const nftClassSymbol = "certifications"
 
-const generateKittenURL = () => {
-  return `https://placekitten.com/${200 + Math.floor(Math.random() * 100)}/${200 + Math.floor(Math.random() * 100)}`
-}
-
-const NFT: NextPage = () => {
+const Certification: NextPage = () => {
   const {walletAddress, signingClient, coreumQueryClient} = useSigningClient()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [classCreated, setClassCreated] = useState(false)
   const [nftClassDescription, setNFTClassDescription] = useState('')
   const [nfts, setNfts] = useState<{ classId: string; id: string, uri: string, uriHash: string, owner: string }[]>([])
-  const [kittenURI, setKittenURI] = useState(generateKittenURL())
   const [transferID, setTransferID] = useState("")
   const [recipientAddress, setRecipientAddress] = useState('')
   const nftClassID = `${nftClassSymbol}-${walletAddress}`
+
+  const certificateURI = "https://img.freepik.com/free-vector/grunge-certified-seal-stamp-rubber-look_78370-664.jpg"
 
   useEffect(() => {
     if (!signingClient || walletAddress.length === 0) {
@@ -94,20 +91,15 @@ const NFT: NextPage = () => {
       setClassCreated(passed)
     })
   }
-
-  const changeKitten = () => {
-    setKittenURI(generateKittenURL())
-  }
-
-  const mintKitten = () => {
+  const mintCertificate = () => {
     setError('')
     setLoading(true)
     sendTx([AssetNFTTx.MsgMint({
       sender: walletAddress,
       classId: nftClassID,
-      id: `kitten-${Date.now()}`,
-      uri: kittenURI,
-      uriHash: sha256.create().update(kittenURI).hex()
+      id: `certificate-${Date.now()}`,
+      uri: certificateURI,
+      uriHash: sha256.create().update(certificateURI).hex()
     })]).then((passed) => {
       if (passed) {
         queryNFTs()
@@ -187,10 +179,7 @@ const NFT: NextPage = () => {
       {transferID == "" && classCreated && (
         <div>
           <h1 className="text-3xl font-bold py-4">
-            Welcome to your {nftClassSymbol} collection!
-          </h1>
-          <h1 className="text-m italic pb-4">
-            {nftClassDescription}
+            List of users with {nftClassDescription} {nftClassSymbol}!
           </h1>
           <div className="grid grid-flow-col auto-cols-max">
             <div>
@@ -225,7 +214,7 @@ const NFT: NextPage = () => {
                         <td className="w-24">
                           {walletAddress == l.owner && (
                             <button className="btn btn-primary rounded-full"
-                                    onClick={() => setTransferID(l.id)}>Transfer</button>
+                                    onClick={() => setTransferID(l.id)}>Certify user</button>
                           )
                           }
                         </td>
@@ -237,11 +226,9 @@ const NFT: NextPage = () => {
               </table>
             </div>
             <div className="ml-8">
-              <img className="rounded-full object-cover h-48 w-48" src={kittenURI} alt=""/>
+              <img className="rounded-full object-cover h-48 w-48" src={certificateURI} alt=""/>
               <div className="py-8">
-                <button className="btn btn-primary float-left btn-accent rounded-full" onClick={changeKitten}>Change
-                </button>
-                <button className="btn btn-primary float-right rounded-full" onClick={mintKitten}>Mint</button>
+                <button className="btn btn-primary float-right rounded-full" onClick={mintCertificate}>Mint</button>
               </div>
             </div>
           </div>
@@ -249,14 +236,14 @@ const NFT: NextPage = () => {
       {transferID != "" && classCreated && (
         <div>
           <h1 className="text-3xl font-bold py-4">
-            Transfer {transferID} NFT ownership.
+            Credit {transferID} NFT ownership.
           </h1>
           <div className="flex w-full max-w-xl">
             <input
               type="text"
               id="recipient-address"
               className="input input-bordered focus:input-primary input-lg rounded-full flex-grow font-mono text-center text-lg"
-              placeholder="Recipient address"
+              placeholder="Address of the certified user"
               onChange={(event) => setRecipientAddress(event.target.value)}
               value={recipientAddress}
             />
@@ -273,7 +260,7 @@ const NFT: NextPage = () => {
                 className="mt-4 md:mt-0 btn btn-primary btn-lg font-semibold hover:text-base-100 text-2xl rounded-full flex-grow"
                 onClick={transferOwnership}
               >
-                Transfer
+                Credit
               </button>
             </div>
           </div>
@@ -282,4 +269,4 @@ const NFT: NextPage = () => {
   )
 }
 
-export default NFT
+export default Certification

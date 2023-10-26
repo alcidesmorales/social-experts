@@ -72,7 +72,7 @@ const ProfileForm = ({ handleOnFinish }: ProfileFormProps) => {
       </Form.Item>
 
       <Form.Item
-        label="Roles"
+        label="Roles and years of experience"
         name="roles"
         rules={[
           {
@@ -87,14 +87,187 @@ const ProfileForm = ({ handleOnFinish }: ProfileFormProps) => {
             noStyle
             rules={[{ required: true, message: 'Role name is required' }]}
           >
-            <Input style={{ width: '50%' }} placeholder="Role Name" />
+            <Select
+              style={{ width: '80%' }}
+              placeholder="Select role name"
+            >
+              <Option value="Software Engineer">Software Engineer</Option>
+              <Option value="Frontend Developer">Frontend Developer</Option>
+              <Option value="Backend Developer">Backend Developer</Option>
+              <Option value="Full Stack Developer">Full Stack Developer</Option>
+              <Option value="DevOps Engineer">DevOps Engineer</Option>
+              <Option value="Data Scientist">Data Scientist</Option>
+              <Option value="Data Analyst">Data Analyst</Option>
+              <Option value="Machine Learning Engineer">
+                Machine Learning Engineer
+              </Option>
+              <Option value="AI Specialist">AI Specialist</Option>
+              <Option value="Network Engineer">Network Engineer</Option>
+              <Option value="Systems Administrator">
+                Systems Administrator
+              </Option>
+              <Option value="Database Administrator">
+                Database Administrator
+              </Option>
+              <Option value="UI/UX Designer">UI/UX Designer</Option>
+              <Option value="QA Tester">QA Tester</Option>
+              <Option value="Scrum Master">Scrum Master</Option>
+              <Option value="Product Owner">Product Owner</Option>
+              <Option value="Architect">Architect</Option>
+              <Option value="Cybersecurity Analyst">
+                Cybersecurity Analyst
+              </Option>
+              <Option value="Systems Analyst">Systems Analyst</Option>
+              <Option value="Technical Support Engineer">
+                Technical Support Engineer
+              </Option>
+              <Option value="IT Consultant">IT Consultant</Option>
+              <Option value="Data Engineer">Data Engineer</Option>
+              <Option value="Network Administrator">
+                Network Administrator
+              </Option>
+              <Option value="Game Developer">Game Developer</Option>
+              <Option value="Cloud Engineer">Cloud Engineer</Option>
+              <Option value="Embedded Systems Engineer">
+                Embedded Systems Engineer
+              </Option>
+              <Option value="Solutions Architect">Solutions Architect</Option>
+              <Option value="Software Tester">Software Tester</Option>
+              <Option value="QA Engineer">QA Engineer</Option>
+              <Option value="Content Manager">Content Manager</Option>
+              <Option value="Copywriter">Copywriter</Option>
+              <Option value="Editor">Editor</Option>
+              <Option value="Proofreader">Proofreader</Option>
+              <Option value="Translator">Translator</Option>
+              <Option value="Technical Writer">Technical Writer</Option>
+              <Option value="SEO Specialist">SEO Specialist</Option>
+              <Option value="Product Analyst">Product Analyst</Option>
+              <Option value="UI Designer">UI Designer</Option>
+              <Option value="Motion Graphics Designer">
+                Motion Graphics Designer
+              </Option>
+              <Option value="Brand Manager">Brand Manager</Option>
+              <Option value="Content Strategist">Content Strategist</Option>
+              <Option value="Social Media Manager">Social Media Manager</Option>
+              <Option value="Community Manager">Community Manager</Option>
+              <Option value="Content Creator">Content Creator</Option>
+              <Option value="E-commerce Manager">E-commerce Manager</Option>
+              <Option value="Digital Marketing Specialist">
+                Digital Marketing Specialist
+              </Option>
+              <Option value="UX Researcher">UX Researcher</Option>
+              <Option value="SEO Specialist">SEO Specialist</Option>
+              <Option value="Product Manager">Product Manager</Option>
+              <Option value="Project Manager">Project Manager</Option>
+              <Option value="Business Analyst">Business Analyst</Option>
+              <Option value="Financial Analyst">Financial Analyst</Option>
+              <Option value="IT Manager">IT Manager</Option>
+              <Option value="IT Director">IT Director</Option>
+              <Option value="Chief Technology Officer (CTO)">
+                Chief Technology Officer (CTO)
+              </Option>
+              <Option value="Chief Information Officer (CIO)">
+                Chief Information Officer (CIO)
+              </Option>
+              <Option value="Security Engineer">Security Engineer</Option>
+              <Option value="Penetration Tester">Penetration Tester</Option>
+              <Option value="Forensic Analyst">Forensic Analyst</Option>
+              <Option value="Security Consultant">Security Consultant</Option>
+              <Option value="Security Architect">Security Architect</Option>
+              <Option value="Ethical Hacker">Ethical Hacker</Option>
+              <Option value="Network Security Engineer">
+                Network Security Engineer
+              </Option>
+              <Option value="Malware Analyst">Malware Analyst</Option>
+              <Option value="Incident Responder">Incident Responder</Option>
+              <Option value="Security Operations Center (SOC) Analyst">
+                Security Operations Center (SOC) Analyst
+              </Option>
+              <Option value="Identity and Access Management (IAM) Specialist">
+                Identity and Access Management (IAM) Specialist
+              </Option>
+              <Option value="Blockchain Developer">Blockchain Developer</Option>
+              <Option value="Cryptocurrency Analyst">
+                Cryptocurrency Analyst
+              </Option>
+              <Option value="Smart Contract Developer">
+                Smart Contract Developer
+              </Option>
+              <Option value="AI Ethics Specialist">AI Ethics Specialist</Option>
+              <Option value="Robotics Engineer">Robotics Engineer</Option>
+              <Option value="Computer Vision Engineer">
+                Computer Vision Engineer
+              </Option>
+              <Option value="Natural Language Processing (NLP) Engineer">
+                Natural Language Processing (NLP) Engineer
+              </Option>
+              <Option value="Speech Recognition Engineer">
+                Speech Recognition Engineer
+              </Option>
+              <Option value="Augmented Reality (AR) Developer">
+                Augmented Reality (AR) Developer
+              </Option>
+              <Option value="Virtual Reality (VR) Developer">
+                Virtual Reality (VR) Developer
+              </Option>
+              <Option value="Gaming Developer">Gaming Developer</Option>
+              <Option value="Software Development Manager">
+                Software Development Manager
+              </Option>
+              <Option value="Technical Project Manager">
+                Technical Project Manager
+              </Option>
+              <Option value="UX/UI Manager">UX/UI Manager</Option>
+              <Option value="IT Security Manager">IT Security Manager</Option>
+              <Option value="Data Science Manager">Data Science Manager</Option>
+              <Option value="AI/ML Researcher">AI/ML Researcher</Option>
+              <Option value="AI/ML Product Manager">
+                AI/ML Product Manager
+              </Option>
+              <Option value="Ethical AI/ML Consultant">
+                Ethical AI/ML Consultant
+              </Option>
+              <Option value="Network Security Manager">
+                Network Security Manager
+              </Option>
+              <Option value="Blockchain Consultant">
+                Blockchain Consultant
+              </Option>
+              <Option value="VR/AR Development Manager">
+                VR/AR Development Manager
+              </Option>
+              <Option value="Chief Information Security Officer (CISO)">
+                Chief Information Security Officer (CISO)
+              </Option>
+              <Option value="Chief AI Officer (CAIO)">
+                Chief AI Officer (CAIO)
+              </Option>
+              <Option value="Chief Data Officer (CDO)">
+                Chief Data Officer (CDO)
+              </Option>
+              <Option value="Chief Analytics Officer (CAO)">
+                Chief Analytics Officer (CAO)
+              </Option>
+              <Option value="Chief Privacy Officer (CPO)">
+                Chief Privacy Officer (CPO)
+              </Option>
+              <Option value="Chief Robotics Officer (CRO)">
+                Chief Robotics Officer (CRO)
+              </Option>
+              <Option value="Chief Blockchain Officer (CBO)">
+                Chief Blockchain Officer (CBO)
+              </Option>
+              <Option value="Chief Virtual Reality Officer (CVRO)">
+                Chief Virtual Reality Officer (CVRO)
+              </Option>
+            </Select>
           </Form.Item>
           <Form.Item
             name={['roles', 0, 'experience']}
             noStyle
             rules={[{ required: true, message: 'Experience is required' }]}
           >
-            <InputNumber style={{ width: '50%' }} placeholder="Experience" />
+            <InputNumber style={{ width: '20%' }} placeholder="Experience" />
           </Form.Item>
         </Input.Group>
       </Form.Item>
@@ -185,7 +358,9 @@ const ProfileForm = ({ handleOnFinish }: ProfileFormProps) => {
       </Form.Item>
 
       <Form.Item>
-        <button type="submit">Create your profile</button>
+        <button type="submit" className={"bg-blue-500 text-white hover:bg-blue-700"} style={{width:"110%"}}>
+            Publish your profile
+        </button>
       </Form.Item>
     </Form>
   )
