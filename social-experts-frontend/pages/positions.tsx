@@ -3,10 +3,62 @@ import type {NextPage} from 'next'
 
 import WalletLoader from 'components/WalletLoader'
 import { JsonObject, SigningCosmWasmClient } from '@cosmjs/cosmwasm-stargate'
-import { Button } from 'antd'
+import { Button, Table } from 'antd'
+
+interface Profile {
+  id: number;
+  location: string;
+  roles: { name: string; experience: number }[];
+  skills: string[];
+}
+
+interface Props {
+  profiles: Profile[];
+}
+
+const columns = [
+  {
+    title: 'ID',
+    dataIndex: 'id',
+    key: 'id',
+  },
+  {
+    title: 'Location',
+    dataIndex: 'location',
+    key: 'location',
+  },
+  {
+    title: 'Roles',
+    dataIndex: 'roles',
+    key: 'roles',
+    render: (roles: { name: string; experience: number }[]) => (
+      <ul>
+        {roles.map((role, index) => (
+          <li key={index}>
+            {role.name} (Experience: {role.experience} years)
+          </li>
+        ))}
+      </ul>
+    ),
+  },
+  {
+    title: 'Skills',
+    dataIndex: 'skills',
+    key: 'skills',
+    render: (skills: string[]) => (
+      <ul>
+        {skills.map((skill, index) => (
+          <li key={index}>{skill}</li>
+        ))}
+      </ul>
+    ),
+  },
+];
 
 const Positions: NextPage = () => {
   const [loading, _setLoading] = useState(false)
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+
 
   const queryPositions = async () => {
     const rpcEndpoint =
@@ -34,6 +86,7 @@ const Positions: NextPage = () => {
       let queryMsg : JsonObject = {"query_profile_list":{}} ;
 
       const result = await client.queryContractSmart(contractAddress, queryMsg );
+      setProfiles(result.profiles);
 
       console.info("The query execution response:", JSON.stringify(result));
     }
@@ -48,6 +101,7 @@ const Positions: NextPage = () => {
           </h1>
           <Button onClick={queryPositions}>Query Positions</Button>
         </div>
+        <Table columns={columns} dataSource={profiles} ></Table>
     </WalletLoader>
   )
 }
