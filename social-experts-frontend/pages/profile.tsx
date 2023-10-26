@@ -12,6 +12,7 @@ import { JsonObject } from "@cosmjs/cosmwasm-stargate/build/modules/wasm/queries
 import { Button } from "antd";
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { calculateFee, GasPrice } from "@cosmjs/stargate";
+import ProfileForm, { profileType } from "components/Profile";
 
 const PUBLIC_CHAIN_NAME = process.env.NEXT_PUBLIC_CHAIN_NAME;
 const PUBLIC_STAKING_DENOM = process.env.NEXT_PUBLIC_STAKING_DENOM || "";
@@ -98,19 +99,14 @@ const Send: NextPage = () => {
     }
   };
 
-  const createNewProfile = async () => {
+  const createNewProfile = async (values: JsonObject) => {
     let msg: JsonObject = {
       new_profile: {
-        min_salary: 120000,
-        location: "Hybrid",
-        roles: [
-          {
-            name: "Data Engineer",
-            experience: 10,
-          },
-        ],
-        skills: ["Python"],
-        active: true,
+        min_salary: values.min_salary,
+        location: values.location,
+        roles: values.roles,
+        skills: values.skills,
+        active: values.active,
       },
     };
 
@@ -118,23 +114,26 @@ const Send: NextPage = () => {
       process.env.NEXT_PUBLIC_CHAIN_RPC_ENDPOINT ||
       "https://full-node.testnet-1.coreum.dev:26657/";
     const PUBLIC_CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID;
-    const offlineSigner = await (window as any)
-      .getOfflineSigner(PUBLIC_CHAIN_ID);
+    const offlineSigner = await (window as any).getOfflineSigner(
+      PUBLIC_CHAIN_ID,
+    );
     if (!offlineSigner) {
       alert("Please install keplr extension");
     } else {
-      const accounts = await offlineSigner.getAccounts()
+      const accounts = await offlineSigner.getAccounts();
       const walletAddress = accounts[0]?.address;
       console.log(`Wallet: ${walletAddress}`);
 
       const memo = "Social Experts - Create new profile";
-      const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || '';
+      const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || "";
 
       const client = await SigningCosmWasmClient.connectWithSigner(
         rpcEndpoint,
         offlineSigner,
       );
-      const gasPrice = GasPrice.fromString("0.025" + process.env.NEXT_PUBLIC_STAKING_DENOM);
+      const gasPrice = GasPrice.fromString(
+        process.env.NEXT_PUBLIC_GAS_PRICE || "0.025utestcore",
+      );
       const executeFee = calculateFee(300000, gasPrice);
 
       const result = await client.execute(
@@ -146,13 +145,16 @@ const Send: NextPage = () => {
       );
       console.info("The contract execution response:", result);
     }
-
-    // await execContract(msg)
   };
 
   return (
     <WalletLoader loading={loading}>
-      <Button onClick={() => createNewProfile()}>Execute contract</Button>
+      <ProfileForm
+        handleOnFinish={function (values: profileType): void {
+          console.log(values);
+          createNewProfile(values);
+        }}
+      />
     </WalletLoader>
   );
 };
